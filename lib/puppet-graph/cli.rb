@@ -7,7 +7,7 @@ module PuppetGraph
       options = {
         :modulepath => 'modules',
       }
-      OptionParser.new do |opts|
+      parser = OptionParser.new do |opts|
         opts.banner = 'Usage: puppet-graph [options]'
 
         opts.on '-c', '--code CODE', 'Code to generate a graph of' do |val|
@@ -43,7 +43,9 @@ module PuppetGraph
           puts "puppet-graph v#{PuppetGraph::VERSION}"
           exit
         end
-      end.parse!
+      end
+
+      parser.parse!
 
       unless [:dot, :png].include?(options[:format])
         puts "Error: Invalid format specified. Valid formats are: dot, png"
