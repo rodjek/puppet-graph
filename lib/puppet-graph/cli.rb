@@ -49,6 +49,7 @@ module PuppetGraph
 
       unless [:dot, :png].include?(options[:format])
         puts "Error: Invalid format specified. Valid formats are: dot, png"
+        puts parser
         exit 1
       end
 
