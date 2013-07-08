@@ -49,19 +49,24 @@ module PuppetGraph
         Puppet[:rundir] = dir
         Puppet[:code] = code
 
-        if fact_overrides.nil?
-          facts = default_facts
-        else
-          facts = default_facts.merge(fact_overrides)
-        end
+        stub_facts
 
-        facts.each do |key, value|
-          Facter.add(key) { setcode { value } }
-        end
-
-        node.merge(facts)
         Puppet::Resource::Catalog.indirection.find(node.name, :use_node => node)
       end
+    end
+
+    def stub_facts
+      if fact_overrides.nil?
+        facts = default_facts
+      else
+        facts = default_facts.merge(fact_overrides)
+      end
+
+      facts.each do |key, value|
+        Facter.add(key) { setcode { value } }
+      end
+
+      node.merge(facts)
     end
 
     def default_facts
