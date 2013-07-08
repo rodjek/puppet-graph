@@ -30,7 +30,7 @@ module PuppetGraph
           end
         end
 
-        opts.on '-r', '--format FORMAT', 'Output format (png or dot)' do |val|
+        opts.on '-r', '--format FORMAT', 'Output format (png or dot). Optional if your output file ends in .dot or .png' do |val|
           options[:format] = val.to_sym
         end
 
