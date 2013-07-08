@@ -3,7 +3,7 @@ require 'optparse'
 
 module PuppetGraph
   class CLI
-    def self.run
+    def self.run(args)
       options = {
         :modulepath => 'modules',
       }
@@ -45,7 +45,7 @@ module PuppetGraph
         end
       end
 
-      parser.parse!
+      parser.parse!(args)
 
       if options[:code].nil?
         puts "Error: No Puppet code provided to be graphed."

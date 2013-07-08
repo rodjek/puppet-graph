@@ -5,4 +5,4 @@ $:.unshift File.join(File.dirname(__FILE__), *%w{.. lib})
 require 'puppet-graph'
 require 'puppet-graph/cli'
 
-PuppetGraph::CLI.run
+PuppetGraph::CLI.run(ARGV)
