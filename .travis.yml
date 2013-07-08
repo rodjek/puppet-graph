@@ -2,6 +2,7 @@ rvm:
   - 1.8.7
   - 1.9.2
   - 1.9.3
+script: "bundle exec rspec"
 env:
   - PUPPET_VERSION=2.6.18
   - PUPPET_VERSION=2.7.21
