@@ -3,6 +3,9 @@ rvm:
   - 1.9.2
   - 1.9.3
 script: "bundle exec rspec"
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq graphviz
 env:
   - PUPPET_VERSION=2.6.18
   - PUPPET_VERSION=2.7.21
