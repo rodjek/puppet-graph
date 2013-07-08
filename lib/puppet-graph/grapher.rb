@@ -34,6 +34,8 @@ module PuppetGraph
         Puppet[:modulepath] = modulepath
         Puppet[:vardir] = dir
         Puppet[:confdir] = dir
+        Puppet[:logdir] = dir
+        Puppet[:rundir] = dir
         Puppet[:code] = code
 
         facts = default_facts.merge(fact_overrides)
