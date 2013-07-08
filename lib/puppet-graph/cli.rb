@@ -6,26 +6,16 @@ module PuppetGraph
     def run(args)
       parser.parse!(args)
 
-      if options[:help]
-        puts parser
-        return 0
-      end
-
-      if options[:version]
-        puts "puppet-graph v#{PuppetGraph::VERSION}"
-        return 0
-      end
-
       if options[:code].nil?
         $stderr.puts "Error: No Puppet code provided to be graphed."
         $stderr.puts parser
-        return 1
+        exit 1
       end
 
       unless [:dot, :png].include?(options[:format])
         $stderr.puts "Error: Invalid format specified. Valid formats are: dot, png"
         $stderr.puts parser
-        return 1
+        exit 1
       end
 
       g = PuppetGraph::Grapher.new
@@ -33,7 +23,6 @@ module PuppetGraph
       g.modulepath = options[:modulepath]
       g.code = options[:code]
       g.draw(options[:format], options[:output_file])
-      return 0
     end
 
     private
@@ -73,11 +62,13 @@ module PuppetGraph
         end
 
         opts.on_tail '-h', '--help', 'Show this help output' do
-          options[:help] = true
+          puts parser
+          exit 0
         end
 
         opts.on_tail '-v', '--version', 'Show the version' do
-          options[:version] = true
+          puts "puppet-graph v#{PuppetGraph::VERSION}"
+          exit 0
         end
       end
     end
