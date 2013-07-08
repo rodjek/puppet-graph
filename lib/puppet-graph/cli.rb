@@ -36,12 +36,12 @@ module PuppetGraph
 
         opts.on_tail '-h', '--help', 'Show this help output' do
           puts opts
-          exit
+          return 0
         end
 
         opts.on_tail '-v', '--version', 'Show the version' do
           puts "puppet-graph v#{PuppetGraph::VERSION}"
-          exit
+          return 0
         end
       end
 
@@ -50,13 +50,13 @@ module PuppetGraph
       if options[:code].nil?
         puts "Error: No Puppet code provided to be graphed."
         puts parser
-        exit 1
+        return 1
       end
 
       unless [:dot, :png].include?(options[:format])
         puts "Error: Invalid format specified. Valid formats are: dot, png"
         puts parser
-        exit 1
+        return 1
       end
 
       g = PuppetGraph::Grapher.new
@@ -64,6 +64,7 @@ module PuppetGraph
       g.modulepath = options[:modulepath]
       g.code = options[:code]
       g.draw(options[:format], options[:output_file])
+      return 0
     end
   end
 end
