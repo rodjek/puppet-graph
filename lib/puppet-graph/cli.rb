@@ -48,14 +48,14 @@ module PuppetGraph
       parser.parse!(args)
 
       if options[:code].nil?
-        puts "Error: No Puppet code provided to be graphed."
-        puts parser
+        $stderr.puts "Error: No Puppet code provided to be graphed."
+        $stderr.puts parser
         return 1
       end
 
       unless [:dot, :png].include?(options[:format])
-        puts "Error: Invalid format specified. Valid formats are: dot, png"
-        puts parser
+        $stderr.puts "Error: Invalid format specified. Valid formats are: dot, png"
+        $stderr.puts parser
         return 1
       end
 
