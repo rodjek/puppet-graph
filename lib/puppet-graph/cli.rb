@@ -3,11 +3,49 @@ require 'optparse'
 
 module PuppetGraph
   class CLI
-    def self.run(args)
-      options = {
+    def run(args)
+      parser.parse!(args)
+
+      if options[:help]
+        puts parser
+        return 0
+      end
+
+      if options[:version]
+        puts "puppet-graph v#{PuppetGraph::VERSION}"
+        return 0
+      end
+
+      if options[:code].nil?
+        $stderr.puts "Error: No Puppet code provided to be graphed."
+        $stderr.puts parser
+        return 1
+      end
+
+      unless [:dot, :png].include?(options[:format])
+        $stderr.puts "Error: Invalid format specified. Valid formats are: dot, png"
+        $stderr.puts parser
+        return 1
+      end
+
+      g = PuppetGraph::Grapher.new
+      g.fact_overrides = options[:fact]
+      g.modulepath = options[:modulepath]
+      g.code = options[:code]
+      g.draw(options[:format], options[:output_file])
+      return 0
+    end
+
+    private
+
+    def options
+      @options ||= {
         :modulepath => 'modules',
       }
-      parser = OptionParser.new do |opts|
+    end
+
+    def parser
+      @parser ||= OptionParser.new do |opts|
         opts.banner = 'Usage: puppet-graph [options]'
 
         opts.on '-c', '--code CODE', 'Code to generate a graph of' do |val|
@@ -35,36 +73,13 @@ module PuppetGraph
         end
 
         opts.on_tail '-h', '--help', 'Show this help output' do
-          puts opts
-          return 0
+          options[:help] = true
         end
 
         opts.on_tail '-v', '--version', 'Show the version' do
-          puts "puppet-graph v#{PuppetGraph::VERSION}"
-          return 0
+          options[:version] = true
         end
       end
-
-      parser.parse!(args)
-
-      if options[:code].nil?
-        $stderr.puts "Error: No Puppet code provided to be graphed."
-        $stderr.puts parser
-        return 1
-      end
-
-      unless [:dot, :png].include?(options[:format])
-        $stderr.puts "Error: Invalid format specified. Valid formats are: dot, png"
-        $stderr.puts parser
-        return 1
-      end
-
-      g = PuppetGraph::Grapher.new
-      g.fact_overrides = options[:fact]
-      g.modulepath = options[:modulepath]
-      g.code = options[:code]
-      g.draw(options[:format], options[:output_file])
-      return 0
     end
   end
 end

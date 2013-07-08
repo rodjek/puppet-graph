@@ -12,7 +12,7 @@ class CommandRun
     $stdout = out
     $stderr = err
 
-    @exitstatus = PuppetGraph::CLI.run(args)
+    @exitstatus = PuppetGraph::CLI.new.run(args)
     @stdout = out.string.strip
     @stderr = err.string.strip
 
