@@ -38,7 +38,11 @@ module PuppetGraph
         Puppet[:rundir] = dir
         Puppet[:code] = code
 
-        facts = default_facts.merge(fact_overrides)
+        if fact_overrides.nil?
+          facts = default_facts
+        else
+          facts = default_facts.merge(fact_overrides)
+        end
 
         facts.each do |key, value|
           Facter.add(key) { setcode { value } }
