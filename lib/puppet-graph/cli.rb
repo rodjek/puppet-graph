@@ -6,17 +6,7 @@ module PuppetGraph
     def run(args)
       parser.parse!(args)
 
-      if options[:code].nil?
-        $stderr.puts "Error: No Puppet code provided to be graphed."
-        $stderr.puts parser
-        exit 1
-      end
-
-      unless [:dot, :png].include?(options[:format])
-        $stderr.puts "Error: Invalid format specified. Valid formats are: dot, png"
-        $stderr.puts parser
-        exit 1
-      end
+      validate_options
 
       g = PuppetGraph::Grapher.new
       g.fact_overrides = options[:fact]
@@ -70,6 +60,20 @@ module PuppetGraph
           puts "puppet-graph v#{PuppetGraph::VERSION}"
           exit 0
         end
+      end
+    end
+
+    def validate_options
+      if options[:code].nil?
+        $stderr.puts "Error: No Puppet code provided to be graphed."
+        $stderr.puts parser
+        exit 1
+      end
+
+      unless [:dot, :png].include?(options[:format])
+        $stderr.puts "Error: Invalid format specified. Valid formats are: dot, png"
+        $stderr.puts parser
+        exit 1
       end
     end
   end
