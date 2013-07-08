@@ -20,7 +20,7 @@ module PuppetGraph
         end
 
         opts.on '-m', '--modulepath PATH', 'The path to your Puppet modules' do |val|
-          options[:modulepath] = value
+          options[:modulepath] = val
         end
 
         opts.on '-o', '--output FILE', 'The file to save the graph to' do |val|
