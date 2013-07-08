@@ -36,7 +36,7 @@ module PuppetGraph
           (options[:fact] ||= {})[key] = value
         end
 
-        opts.on '-m', '--modulepath PATH', 'The path to your Puppet modules' do |val|
+        opts.on '-m', '--modulepath PATH', 'The path to your Puppet modules. Defaults to modules/' do |val|
           options[:modulepath] = val
         end
 
