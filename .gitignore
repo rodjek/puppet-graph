@@ -1,2 +1,5 @@
 /.bundle/
 /vendor/gems/
+/Gemfile.lock
+/test.dot
+/test.png
