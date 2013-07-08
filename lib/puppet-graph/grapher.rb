@@ -5,28 +5,39 @@ module PuppetGraph
     attr_accessor :code
 
     def draw(format, output_file)
-      graph = catalogue.to_ral.relationship_graph
-      graph.vertices.select { |r| r.to_s == 'Class[Settings]' }.each do |vertex|
-        graph.remove_vertex! vertex
-      end
+      self.send("draw_#{format}_graph", output_file)
+    end
 
-      dot_graph = graph.to_dot('label' => code)
+    def draw_png_graph(output_file)
+      dot_graph = relationship_graph.to_dot('label' => code)
 
-      if format == :dot
-        File.open(output_file, 'wb') do |f|
-          f.puts dot_graph
-        end
-      elsif format == :png
-        tmp_dot_file = Tempfile.new('puppet-graph')
-        begin
-          tmp_dot_file.write dot_graph
-          tmp_dot_file.flush
-          `dot -o#{output_file} -Tpng #{tmp_dot_file.path}`
-        ensure
-          tmp_dot_file.close
-          tmp_dot_file.unlink
-        end
+      tmp_dot_file = Tempfile.new('puppet-graph')
+      begin
+        tmp_dot_file.write dot_graph
+        tmp_dot_file.flush
+        `dot -o#{output_file} -Tpng #{tmp_dot_file.path}`
+      ensure
+        tmp_dot_file.close
+        tmp_dot_file.unlink
       end
+    end
+
+    def draw_dot_graph(output_file)
+      dot_graph = relationship_graph.to_dot('label' => code)
+
+      File.open(output_file, 'wb') do |f|
+        f.puts dot_graph
+      end
+    end
+
+    def relationship_graph
+      @relationship_graph ||= lambda {
+        graph = catalogue.to_ral.relationship_graph
+        graph.vertices.select { |r| r.to_s == 'Class[Settings]' }.each do |vertex|
+          graph.remove_vertex! vertex
+        end
+        graph
+      }.call
     end
 
     def catalogue
