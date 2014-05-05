@@ -13,12 +13,12 @@ classes or defined types).
 
 Install it as a standalone gem
 
-    gem install puppet-graph
+    gem install puppet-graph-petems
 
 Or as part of a bundler managed repo
 
     group :development do
-      gem 'puppet-graph'
+      gem 'puppet-graph-petems'
     end
 
 ## Usage
